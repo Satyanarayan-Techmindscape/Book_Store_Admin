@@ -1,0 +1,6 @@
+.p-t{
+  transform: translateX(1000px);
+  visibility: hidden;
+  height: 0;
+  min-width: 100%;
+}

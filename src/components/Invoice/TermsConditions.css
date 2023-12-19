@@ -1,0 +1,31 @@
+/* Default Styling */
+
+* {
+  font-family: arial;
+}
+
+body {
+  margin: 0;
+  padding: 3vw 10vw;
+  box-sizing: border-box;
+}
+
+/* Global Stylings */
+
+li {
+  list-style: none;
+}
+
+h2 {
+  font-size: 1.7vw;
+}
+
+h3 {
+    font-size: 1.5vw;
+}
+
+p {
+  font-size: 1.6vw;
+  font-weight: normal;
+  color: grey;
+}
