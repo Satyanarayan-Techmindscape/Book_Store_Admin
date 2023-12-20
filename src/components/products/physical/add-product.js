@@ -42,6 +42,7 @@ const Add_product = () => {
   const [open, setOpen] = useState(true);
   const [oneditvaritaionid, setOneditvaritaionid] = useState("");
   const [open1, setOpen1] = useState(false);
+  const [isSelected, setIsSelected] = React.useState([false]);
   // const [categoryName, setCategoryName] = React.useState("");
   // const [subCategoryName, setSubCategoryName] = React.useState("");
 
@@ -429,7 +430,31 @@ const Add_product = () => {
     setcolour_of_1_size([]);
     setOneditvaritaionid("");
     setgroup_id(maxgroup_id);
-    setOpen(false);
+    handleCloseModal();
+  };
+
+  const handleCloseModal = () => {
+    const acquiredData = document.querySelectorAll(".master-category");
+    // let isSelected = false;
+    console.log('acquiredData of the field ".master-category"', [
+      ...acquiredData,
+    ]);
+    for (let i = 0; i < acquiredData.length; i++) {
+      console.log(acquiredData[i]);
+      if (acquiredData[i].checked === true) {
+        setIsSelected([true]);
+
+        break;
+      }
+    }
+
+    console.log("Acquired #r elements", isSelected);
+    if (!(isSelected[0])) {
+      toast.error("Field selection is required");
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
   };
   const onCloseModal1 = () => {
     setOpen1(false);
@@ -478,12 +503,12 @@ const Add_product = () => {
     setvardata({ ...vardata });
   };
   const DecreaseItem = (i) => {
-    if (input.quantity == null || undefined || input.quantity == 0) {
-      input.quantity = 0;
+    if (input.quantity == null || undefined || input.quantity <= 0) {
+      input.quantity = 1;
       setInput(input);
       setvardata({ ...vardata });
     } else {
-      input.quantity > 0
+      input.quantity > 1
         ? (input.quantity -= 1)
         : (input.quantity = input.quantity);
       setInput(input);
@@ -711,7 +736,7 @@ const Add_product = () => {
     product_code: "",
     size: [],
     colour: [],
-    quantity: 0,
+    quantity: 1,
     description: "",
     is_recommended: 0,
     is_special: 0,
@@ -759,8 +784,11 @@ const Add_product = () => {
     onCloseModal1("VaryingMdo");
   };
   const setInputChange = (data, param) => {
-    input[param] = data;
-    setInput({ ...input });
+    console.log(input, data, param);
+    // input[param] = data;
+    console.log(input, data, param);
+    setInput({ ...input, [param]: data });
+    console.log(input);
   };
 
   // VARIATION ONCHANGE
@@ -947,8 +975,10 @@ const Add_product = () => {
   return (
     <Fragment>
       <Breadcrumb title="Add Product" parent="Products" />
-      <Modal isOpen={open} toggle={onCloseModal}>
-        <ModalHeader toggle={onCloseModal}>
+      <ToastContainer></ToastContainer>
+      {/* The Master Category Modal for  */}
+      {/* <Modal isOpen={open} toggle={handleCloseModal}>
+        <ModalHeader>
           <h5 className="modal-title f-w-600" id="exampleModalLabel2">
             Product Master Type
           </h5>
@@ -959,14 +989,20 @@ const Add_product = () => {
               return (
                 <Label key={data.id}>
                   <Input
-                    className="radio_animated"
+                    className="radio_animated master-category"
                     id="r"
                     type="checkbox"
-                    name="rdo-ani"
+                    name="rdo-ani[]"
                     onChange={(e) => {
+                      console.log(
+                        document.getElementsByName("rdo-ani[]")[0].checked
+                      );
+
                       setInputChange(
-                        document.getElementById("r").checked ? 1 : 0,
-                        data.id
+                        document.getElementsByName("rdo-ani[]").checked
+                          ? data.id
+                          : 0,
+                        "masterCategory"
                       );
                       setProd({ data: data.id });
                     }}
@@ -980,13 +1016,7 @@ const Add_product = () => {
         </ModalBody>
 
         <ModalFooter>
-          <Button
-            onClick={() => {
-              setOpen(false);
-            }}
-          >
-            Save
-          </Button>
+          <Button onClick={handleCloseModal}>Save</Button>
           <Button
             type="button"
             color="secondary"
@@ -995,7 +1025,8 @@ const Add_product = () => {
             Close
           </Button>
         </ModalFooter>
-      </Modal>
+      </Modal> */}
+
       <Container fluid={true}>
         <Row>
           <Col sm="12">

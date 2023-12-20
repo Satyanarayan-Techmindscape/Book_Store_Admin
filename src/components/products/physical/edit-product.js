@@ -209,6 +209,7 @@ const Add_product = () => {
             is_varient: pr_data.is_varient,
             is_recommended: pr_data.is_recommended,
             is_special: pr_data.is_special,
+            product_code: pr_data.product_code,
             // variation_option_id:
             //   pr_data.variations[0].product_variation_details[0].id,
             // variation_id: pr_data.variations[0].id,
@@ -362,14 +363,17 @@ const Add_product = () => {
     } else {
       input.quantity += 1;
     }
+    setInput(input);
     setvardata({ ...vardata });
   };
   const DecreaseItem = (i) => {
-    if (input.quantity == null || undefined || input.quantity == 1) {
-      input.quantity = 1;
+    if (input.quantity == null || undefined || input.quantity <= 0) {
+      input.quantity = 0;
       setvardata({ ...vardata });
+      setInput(input);
     } else {
       input.quantity -= 1;
+      setInput(input);
       setvardata({ ...vardata });
     }
   };
@@ -596,6 +600,7 @@ const Add_product = () => {
     payload_data.append("length", input.length);
     payload_data.append("width", input.width);
     payload_data.append("name", input.product_name);
+    payload_data.append("product_code", input.poduct_code);
     payload_data.append("master_product_type_id", 1);
     payload_data.append("author_id", authorData.id);
     payload_data.append("is_variant", "yes");
@@ -770,13 +775,11 @@ const Add_product = () => {
                               return (
                                 <li key="{i}">
                                   <div className="box-input-file">
-                                    {i == 0 && (
-                                      <Input
-                                        className="upload"
-                                        type="file"
-                                        onChange={(e) => _handleImgChange(e, i)}
-                                      />
-                                    )}
+                                    <Input
+                                      className="upload"
+                                      type="file"
+                                      onChange={(e) => _handleImgChange(e, i)}
+                                    />
 
                                     <img
                                       alt=""
@@ -812,7 +815,9 @@ const Add_product = () => {
                               }}
                               required
                             >
-                              <DropdownToggle caret>{drdata}</DropdownToggle>
+                              <DropdownToggle caret>
+                                {drdata ? drdata : "Kids"}{" "}
+                              </DropdownToggle>
                               <DropdownMenu>
                                 {categoryNames?.map((item, i) => (
                                   <DropdownItem
@@ -824,9 +829,7 @@ const Add_product = () => {
                                       setCover(item.icon);
                                     }}
                                   >
-                                    {item.name != ""
-                                      ? item.name
-                                      : "Not Selected"}
+                                    {item.name}
                                   </DropdownItem>
                                 ))}
                               </DropdownMenu>
@@ -843,7 +846,9 @@ const Add_product = () => {
                               }}
                               required
                             >
-                              <DropdownToggle caret>{drdata1}</DropdownToggle>
+                              <DropdownToggle caret>
+                                {drdata1 ? drdata1 : "sub category"}{" "}
+                              </DropdownToggle>
                               <DropdownMenu>
                                 {subcategoryNames?.map(
                                   (item, i) =>
@@ -1259,7 +1264,7 @@ const Add_product = () => {
                                   alignItems: "self-start",
                                 }}
                                 name="{i}"
-                                value={input.quantity}
+                                value={input.quantity ? input.quantity : ""}
                                 onChange={handleChange}
                               />
 
