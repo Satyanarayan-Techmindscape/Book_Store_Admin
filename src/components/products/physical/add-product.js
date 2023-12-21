@@ -434,27 +434,27 @@ const Add_product = () => {
   };
 
   const handleCloseModal = () => {
-    const acquiredData = document.querySelectorAll(".master-category");
-    // let isSelected = false;
-    console.log('acquiredData of the field ".master-category"', [
-      ...acquiredData,
-    ]);
-    for (let i = 0; i < acquiredData.length; i++) {
-      console.log(acquiredData[i]);
-      if (acquiredData[i].checked === true) {
-        setIsSelected([true]);
+    // const acquiredData = document.querySelectorAll(".master-category");
+    // // let isSelected = false;
+    // console.log('acquiredData of the field ".master-category"', [
+    //   ...acquiredData,
+    // ]);
+    // for (let i = 0; i < acquiredData.length; i++) {
+    //   console.log(acquiredData[i]);
+    //   if (acquiredData[i].checked === true) {
+    //     setIsSelected([true]);
 
-        break;
-      }
-    }
+    //     break;
+    //   }
+    // }
 
-    console.log("Acquired #r elements", isSelected);
-    if (!isSelected[0]) {
-      toast.error("Field selection is required");
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
+    // console.log("Acquired #r elements", isSelected);
+    // if (!isSelected[0]) {
+    //   // toast.error("Field selection is required");
+    //   setOpen(true);
+    // } else {
+    //   setOpen(false);
+    // }
   };
   const onCloseModal1 = () => {
     setOpen1(false);
@@ -595,6 +595,8 @@ const Add_product = () => {
   const [Authors, setAuthors] = useState([]);
   // const [selectedCategory, setSelectedCategory] = React.useState([])
   // const [selectedSubCategory, setSelectedSubCategory] = React.useState([])
+  const [is_Selected1, setIs_Selected1] = React.useState(false);
+  const [is_Selected2, setIs_Selected2] = React.useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -742,7 +744,8 @@ const Add_product = () => {
     description: "",
     is_recommended: 0,
     is_special: 0,
-    product_types: [],
+
+    // checked_product_types: [],
   });
 
   const selectDropDownVal = (id, name) => {
@@ -789,7 +792,7 @@ const Add_product = () => {
   const setInputChange = (data, param) => {
     console.log(input, data, param);
     // input[param] = data;
-    console.log(input, data, param);
+    console.log("pre change input state", input, data, param);
     setInput({ ...input, [param]: data });
     console.log(input);
   };
@@ -929,6 +932,8 @@ const Add_product = () => {
     payload_data.append("availability", "1");
     payload_data.append("is_special", input.is_special);
     payload_data.append("is_recommended", input.is_recommended);
+    payload_data.append("NewRelease", input.NewRelease);
+    payload_data.append("DealOfTheWeek", input.DealOfTheWeek);
     console.log("that");
     console.log(variation);
     payload_data.append(
@@ -975,16 +980,19 @@ const Add_product = () => {
       '; width:30px; height:30px; border-radius:100% ; margin-right:2px"></li>';
   });
 
-  const setProductTypesfn = () => {
-    const all_elements = document.querySelectorAll(".check-product-type");
-    let newProductTypes = [];
-    for (let i = 0; i < all_elements.length; i++) {
-      if (all_elements[i].value === true) {
-        newProductTypes.push(i);
-      }
-    }
-    setInputChange(newProductTypes, product_types);
-  };
+  // const setProductTypesfn = () => {
+  //   const all_elements = document.querySelectorAll(".check-product-type");
+  //   console.log(all_elements, "All Elements from setroductTypefn");
+  //   let newProductTypes = [];
+  //   for (let i = 0; i < all_elements.length; i++) {
+  //     console.log("each check box", all_elements[i], all_elements[i].checked);
+  //     if (all_elements[i].checked) {
+  //       newProductTypes.push([i]);
+  //     }
+  //   }
+  //   // console.log("Checked Product Types", newProductTypes);
+  //   // setInputChange(newProductTypes, "checked_product_types");
+  // };
 
   return (
     <Fragment>
@@ -1341,7 +1349,10 @@ const Add_product = () => {
                                   id="r"
                                   type="checkbox"
                                   name="rdo-ani"
-                                  onChange={setProductTypesfn}
+                                  onChange={() => {
+                                    setIs_Selected1(!is_Selected1);
+                                    setInputChange(is_Selected1, "NewRelease");
+                                  }}
                                 />
                                 {"New Release"} {"  "}
                               </Label>
@@ -1362,11 +1373,17 @@ const Add_product = () => {
                               </Label> */}
                               <Label>
                                 <Input
-                                  className="radio_animated"
+                                  className="radio_animated check-product-type"
                                   id="r"
                                   type="checkbox"
                                   name="rdo-ani"
-                                  onChange={setProductTypesfn}
+                                  onChange={() => {
+                                    setIs_Selected2(!is_Selected2);
+                                    setInputChange(
+                                      is_Selected2,
+                                      "DealOfTheWeek"
+                                    );
+                                  }}
                                 />
                                 {"Deal Of The Week"}
                               </Label>
