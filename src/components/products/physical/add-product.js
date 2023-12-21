@@ -449,7 +449,7 @@ const Add_product = () => {
     }
 
     console.log("Acquired #r elements", isSelected);
-    if (!(isSelected[0])) {
+    if (!isSelected[0]) {
       toast.error("Field selection is required");
       setOpen(true);
     } else {
@@ -530,11 +530,13 @@ const Add_product = () => {
   };
   const _handleImgChange = (e, i) => {
     e.preventDefault();
+
     console.log("_______image id is ___" + i);
     let reader = new FileReader();
     console.log(e.target.files);
     const image = e.target.files[0];
     console.log(image);
+    console.log(activeImage);
 
     reader.onload = () => {
       dummyimgs[i].img = reader.result;
@@ -544,7 +546,7 @@ const Add_product = () => {
       setDummyimgs(dummyimgs);
     };
 
-    reader.readAsDataURL(image);
+    image && reader.readAsDataURL(image);
     let group_ids = arrayColumn(myvariation, "group_id");
     group_ids = group_ids.filter(onlyUnique);
     console.log(group_ids);
@@ -740,6 +742,7 @@ const Add_product = () => {
     description: "",
     is_recommended: 0,
     is_special: 0,
+    product_types: [],
   });
 
   const selectDropDownVal = (id, name) => {
@@ -972,11 +975,24 @@ const Add_product = () => {
       '; width:30px; height:30px; border-radius:100% ; margin-right:2px"></li>';
   });
 
+  const setProductTypesfn = () => {
+    const all_elements = document.querySelectorAll(".check-product-type");
+    let newProductTypes = [];
+    for (let i = 0; i < all_elements.length; i++) {
+      if (all_elements[i].value === true) {
+        newProductTypes.push(i);
+      }
+    }
+    setInputChange(newProductTypes, product_types);
+  };
+
   return (
     <Fragment>
       <Breadcrumb title="Add Product" parent="Products" />
       <ToastContainer></ToastContainer>
-      {/* The Master Category Modal for  */}
+
+      {/**********************************The Master Category Modal(Banner) Removed here **************************/}
+
       {/* <Modal isOpen={open} toggle={handleCloseModal}>
         <ModalHeader>
           <h5 className="modal-title f-w-600" id="exampleModalLabel2">
@@ -1026,6 +1042,8 @@ const Add_product = () => {
           </Button>
         </ModalFooter>
       </Modal> */}
+
+      {/**********************************The Master Category Modal(Banner) Removed here **************************/}
 
       <Container fluid={true}>
         <Row>
@@ -1319,16 +1337,11 @@ const Add_product = () => {
                             <div className="row flex">
                               <Label>
                                 <Input
-                                  className="radio_animated"
+                                  className="radio_animated check-product-type"
                                   id="r"
                                   type="checkbox"
                                   name="rdo-ani"
-                                  onChange={(e) => {
-                                    setInputChange(
-                                      "New Release",
-                                      "product_ype"
-                                    );
-                                  }}
+                                  onChange={setProductTypesfn}
                                 />
                                 {"New Release"} {"  "}
                               </Label>
@@ -1353,12 +1366,7 @@ const Add_product = () => {
                                   id="r"
                                   type="checkbox"
                                   name="rdo-ani"
-                                  onChange={(e) => {
-                                    setInputChange(
-                                      "Deal Of The Week",
-                                      "product_ype"
-                                    );
-                                  }}
+                                  onChange={setProductTypesfn}
                                 />
                                 {"Deal Of The Week"}
                               </Label>

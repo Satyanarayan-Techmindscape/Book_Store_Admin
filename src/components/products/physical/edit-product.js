@@ -122,80 +122,80 @@ const Add_product = () => {
       await get("admin/product/show/" + pid).then((res) => {
         if (res.response) {
           let product = res.data?.product;
-          let variation_data = res.data?.variations;
+          // let variation_data = res.data?.variations;
           console.log(product);
           setproductdata(product);
           // let next = product.variations.length;
 
           // mapping of variation
-          const result = product.variations.filter(
-            (thing, index, self) =>
-              // index === self.findIndex((t) => (t.size == thing.size && t.image!=null))
-              index === self.findIndex((t) => t.size == thing.size)
-          );
-          (result || []).map((data, i) => {
-            console.log("___the images_____", result[i].image);
-            dummyimgs[i] = {
-              id: result[i].id,
-              img:
-                "https://yrpitsolutions.com/Bookstore_API/" + result[i].image,
-              file: "",
-              is_variation_image: "yes",
-            };
-            showdummyimg[i] = {
-              id: result[i].id,
-              img:
-                "https://yrpitsolutions.com/Bookstore_API/" + result[i].image,
-              file: "",
-              is_variation_image: "yes",
-            };
-          });
-          setProImages(result);
-          setdummyProImages(result);
-
-          product.variations.forEach((val, i) => {
-            val.image = [
-              "https://yrpitsolutions.com/Bookstore_API/" + val.image,
-            ];
-            val.product_images.forEach((data, i) => {
-              data.image_path =
-                "https://yrpitsolutions.com/Bookstore_API/" + data.image_path;
-            });
-          });
-          console.log("See this");
-          console.log(product.variations);
-          // const data=product.variations.map((data,i)=>{
-          //   data.id=i
-          //   return data;
-          // })
-          setvariation([...product.variations]);
-          // setvardata()
-          // setvariationlistt((variationlistt) => [
-          //   ...variationlistt,
-          //   variationdatashow,
-          // ]);
-
-          nhtml = "";
+          // const result = product.variations.filter(
+          //   (thing, index, self) =>
+          //     // index === self.findIndex((t) => (t.size == thing.size && t.image!=null))
+          //     index === self.findIndex((t) => t.size == thing.size)
+          // );
+          // (result || []).map((data, i) => {
+          //   console.log("___the images_____", result[i].image);
+          //   dummyimgs[i] = {
+          //     id: result[i].id,
+          //     img:
+          //       "https://yrpitsolutions.com/Bookstore_API/" + result[i].image,
+          //     file: "",
+          //     is_variation_image: "yes",
+          //   };
+          //   showdummyimg[i] = {
+          //     id: result[i].id,
+          //     img:
+          //       "https://yrpitsolutions.com/Bookstore_API/" + result[i].image,
+          //     file: "",
+          //     is_variation_image: "yes",
+          //   };
           // });
-          product.product_images
-            .slice(result.length, product.product_images.length)
-            .map((data, i) => {
-              dummyimgs[result.length + i] = {
-                id: data.id,
-                img:
-                  "https://yrpitsolutions.com/Bookstore_API/" + data.image_path,
-                file: "",
-                is_variation_image: "",
-              };
-              showdummyimg[result.length + i] = {
-                id: data.id,
-                img:
-                  "https://yrpitsolutions.com/Bookstore_API/" + data.image_path,
-                file: "",
-                is_variation_image: "",
-              };
-            });
-          setActiveImage(0);
+          // setProImages(result);
+          // setdummyProImages(result);
+
+          // product.variations.forEach((val, i) => {
+          //   val.image = [
+          //     "https://yrpitsolutions.com/Bookstore_API/" + val.image,
+          //   ];
+          //   val.product_images.forEach((data, i) => {
+          //     data.image_path =
+          //       "https://yrpitsolutions.com/Bookstore_API/" + data.image_path;
+          //   });
+          // });
+          // console.log("See this");
+          // console.log(product.variations);
+          // // const data=product.variations.map((data,i)=>{
+          // //   data.id=i
+          // //   return data;
+          // // })
+          // setvariation([...product.variations]);
+          // // setvardata()
+          // // setvariationlistt((variationlistt) => [
+          // //   ...variationlistt,
+          // //   variationdatashow,
+          // // ]);
+
+          // nhtml = "";
+          // // });
+          // product.product_images
+          //   .slice(result.length, product.product_images.length)
+          //   .map((data, i) => {
+          //     dummyimgs[result.length + i] = {
+          //       id: data.id,
+          //       img:
+          //         "https://yrpitsolutions.com/Bookstore_API/" + data.image_path,
+          //       file: "",
+          //       is_variation_image: "",
+          //     };
+          //     showdummyimg[result.length + i] = {
+          //       id: data.id,
+          //       img:
+          //         "https://yrpitsolutions.com/Bookstore_API/" + data.image_path,
+          //       file: "",
+          //       is_variation_image: "",
+          //     };
+          //   });
+          // setActiveImage(0);
           // setvariation(update_var);
           const pr_data = res.data?.product;
           const data = {
@@ -216,15 +216,16 @@ const Add_product = () => {
             // price: pr_data.variations[0].product_variation_details[0].price,
             // tax: pr_data.variations[0].product_variation_details[0].tax,
             // quantity: pr_data.variations[0].product_variation_details[0].stock,
-            product_images: [...product.product_images],
+            // product_images: [...product.product_images],
           };
           console.log("data", data);
           setInput({
             ...data,
             sub_category_id: product.product_category?.id,
           });
-          setdrdata1(product.product_category?.name);
-          setdrdata(product.product_parent_category_name);
+          setdrdata1(product.sub_category_name);
+          setdrdata(product.category_name);
+          setAuthorData({ ...authorData, first_name: product.author_name });
           setValue(product.description);
           // selectSubDropDownVal(product.product_category?.id,product.product_category?.name)
           // selectDropDownVal(product.product_category?.parent_id,categoryNames.map((data)=>{
@@ -450,6 +451,10 @@ const Add_product = () => {
   const [showvariationlist, setshowvariationlist] = useState([]);
   const [subcategoryNames, setSubCategoryNames] = useState([]);
   const [masterCategory, setMasterCategory] = useState([]);
+  const [productTypes, setProductTypes] = React.useState([
+    "New Release",
+    "Deal Of The Week",
+  ]);
   const [Authors, setAuthors] = useState([]);
   const nav = useNavigate();
 
@@ -816,7 +821,7 @@ const Add_product = () => {
                               required
                             >
                               <DropdownToggle caret>
-                                {drdata ? drdata : "Kids"}{" "}
+                                {drdata ? drdata : "Category"}{" "}
                               </DropdownToggle>
                               <DropdownMenu>
                                 {categoryNames?.map((item, i) => (
@@ -883,9 +888,7 @@ const Add_product = () => {
                               required
                             >
                               <DropdownToggle caret>
-                                {authorData.first_name +
-                                  " " +
-                                  authorData.last_name}
+                                {authorData.first_name}
                               </DropdownToggle>
                               <DropdownMenu>
                                 {Authors?.map((item, i) => (
@@ -1020,9 +1023,9 @@ const Add_product = () => {
                               Product Type :
                             </Label>
                             <div className="row flex">
-                              {masterCategory.map((data) => {
+                              {productTypes.map((data, i) => {
                                 return (
-                                  <Label key={data.id}>
+                                  <Label key={i}>
                                     <Input
                                       className="radio_animated"
                                       id="r"
@@ -1037,7 +1040,7 @@ const Add_product = () => {
                                         );
                                       }}
                                     />
-                                    {data.name} {"  "}
+                                    {data}
                                   </Label>
                                 );
                               })}
