@@ -443,11 +443,9 @@ const Add_product = () => {
     //   console.log(acquiredData[i]);
     //   if (acquiredData[i].checked === true) {
     //     setIsSelected([true]);
-
     //     break;
     //   }
     // }
-
     // console.log("Acquired #r elements", isSelected);
     // if (!isSelected[0]) {
     //   // toast.error("Field selection is required");
@@ -544,6 +542,7 @@ const Add_product = () => {
       dummyimgs[i].file_name = image.name;
       setFile({ file: file });
       setDummyimgs(dummyimgs);
+      setCover(dummyimgs[0]?.img);
     };
 
     image && reader.readAsDataURL(image);
@@ -927,7 +926,7 @@ const Add_product = () => {
     payload_data.append("is_variant", "yes");
     payload_data.append("description", value);
     payload_data.append("sub_category_id", input.sub_category_id);
-    payload_data.append("photos", "1");
+    // payload_data.append("photos", "1");
     payload_data.append("product_code", input.product_code);
     payload_data.append("availability", "1");
     payload_data.append("is_special", input.is_special);
@@ -1088,11 +1087,13 @@ const Add_product = () => {
                         <Col xl="9 xl-50" sm="6 col-9">
                           <img
                             src={
-                              "https://yrpitsolutions.com/Bookstore_API/" +
+                              // "https://yrpitsolutions.com/Bookstore_API/" +
+                              // cover
                               cover
                             }
                             alt=""
                             className="img-fluid image_zoom_1 blur-up lazyloaded"
+                            style={{ maxWidth: 400, minWidth: 350 }}
                           />
                         </Col>
                         <Col xl="3 xl-50" sm="6 col-3">
@@ -1100,12 +1101,29 @@ const Add_product = () => {
                             {dummyimgs.map((res, i) => {
                               return (
                                 <li key="{i}">
-                                  <div className="box-input-file">
+                                  <div
+                                    className="box-input-file"
+                                    id={`${i}`}
+                                    onMouseEnter={() =>
+                                      setCover((prev) =>
+                                        dummyimgs[i].img
+                                          ? dummyimgs[i].img
+                                          : prev
+                                      )
+                                    }
+                                  >
                                     {
                                       <Input
                                         className="upload"
                                         type="file"
-                                        onChange={(e) => _handleImgChange(e, i)}
+                                        onChange={(e) => {
+                                          _handleImgChange(e, i);
+                                          setCover((prev) =>
+                                            dummyimgs[i].img
+                                              ? dummyimgs[i].img
+                                              : prev
+                                          );
+                                        }}
                                       />
                                     }
 
@@ -1152,7 +1170,7 @@ const Add_product = () => {
                                     onClick={() => {
                                       selectDropDownVal(item.id, item.name);
                                       console.log("icon", item);
-                                      setCover(item.icon);
+                                      // setCover(item.icon);
                                     }}
                                   >
                                     {item.name}
@@ -1272,7 +1290,10 @@ const Add_product = () => {
                             </Label>
                             <div className="col-xl-8 col-sm-7">
                               <input
-                                onChange={(e) => _handleImgChange(e, 0)}
+                                onChange={(e) => {
+                                  _handleImgChange(e, 0);
+                                  setCover(dummyimgs[0]?.img);
+                                }}
                                 type="file"
                                 accept="image/png, image/jpeg"
                                 className="border form-group mb-3 mr-3 p-1 rounded-2 "

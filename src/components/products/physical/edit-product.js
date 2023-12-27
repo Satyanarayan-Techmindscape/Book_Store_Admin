@@ -831,7 +831,7 @@ const Add_product = () => {
                                     onClick={() => {
                                       selectDropDownVal(item.id, item.name);
                                       console.log("icon", item);
-                                      setCover(item.icon);
+                                      
                                     }}
                                   >
                                     {item.name}

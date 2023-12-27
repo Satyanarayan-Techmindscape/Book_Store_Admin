@@ -32,11 +32,14 @@ import axios from "axios";
 
 const Category = () => {
   const [categoryData, setCategoryData] = useState([]);
-  console.log("🚩 ~ file: category.js:35 ~ Category ~ categoryData:", categoryData)
+  console.log(
+    "🚩 ~ file: category.js:35 ~ Category ~ categoryData:",
+    categoryData
+  );
   const [header, setHeader] = useState([]);
   const [open, setOpen] = useState(false);
   const [dropen, setdropen] = useState(false);
-  const [drdata, setdrdata] = useState("Category");
+  const [drdata, setdrdata] = useState("Header");
 
   const onOpenModal = () => {
     setOpen(true);
@@ -70,7 +73,8 @@ const Category = () => {
                 src={
                   category.icon == null
                     ? "https://fastly.picsum.photos/id/925/200/300.jpg?hmac=1mxh8L9qVukkpb-iUojF9keY4Eq6gL0Ip0-kRYFE4gg"
-                    : "https://yrpitsolutions.com/Bookstore_API/" + category.icon
+                    : "https://yrpitsolutions.com/Bookstore_API/" +
+                      category.icon
                 }
                 style={{ width: 50, height: 50 }}
               />
@@ -131,7 +135,7 @@ const Category = () => {
 
     if (
       input.category_name == null ||
-      input.file == null ||
+     
       input.header == null
     ) {
       toast.warning("Please Fill All the fileds");
