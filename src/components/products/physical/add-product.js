@@ -434,27 +434,25 @@ const Add_product = () => {
   };
 
   const handleCloseModal = () => {
-    const acquiredData = document.querySelectorAll(".master-category");
-    // let isSelected = false;
-    console.log('acquiredData of the field ".master-category"', [
-      ...acquiredData,
-    ]);
-    for (let i = 0; i < acquiredData.length; i++) {
-      console.log(acquiredData[i]);
-      if (acquiredData[i].checked === true) {
-        setIsSelected([true]);
-
-        break;
-      }
-    }
-
-    console.log("Acquired #r elements", isSelected);
-    if (!(isSelected[0])) {
-      toast.error("Field selection is required");
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
+    // const acquiredData = document.querySelectorAll(".master-category");
+    // // let isSelected = false;
+    // console.log('acquiredData of the field ".master-category"', [
+    //   ...acquiredData,
+    // ]);
+    // for (let i = 0; i < acquiredData.length; i++) {
+    //   console.log(acquiredData[i]);
+    //   if (acquiredData[i].checked === true) {
+    //     setIsSelected([true]);
+    //     break;
+    //   }
+    // }
+    // console.log("Acquired #r elements", isSelected);
+    // if (!isSelected[0]) {
+    //   // toast.error("Field selection is required");
+    //   setOpen(true);
+    // } else {
+    //   setOpen(false);
+    // }
   };
   const onCloseModal1 = () => {
     setOpen1(false);
@@ -530,11 +528,13 @@ const Add_product = () => {
   };
   const _handleImgChange = (e, i) => {
     e.preventDefault();
+
     console.log("_______image id is ___" + i);
     let reader = new FileReader();
     console.log(e.target.files);
     const image = e.target.files[0];
     console.log(image);
+    console.log(activeImage);
 
     reader.onload = () => {
       dummyimgs[i].img = reader.result;
@@ -542,9 +542,10 @@ const Add_product = () => {
       dummyimgs[i].file_name = image.name;
       setFile({ file: file });
       setDummyimgs(dummyimgs);
+      setCover(dummyimgs[0]?.img);
     };
 
-    reader.readAsDataURL(image);
+    image && reader.readAsDataURL(image);
     let group_ids = arrayColumn(myvariation, "group_id");
     group_ids = group_ids.filter(onlyUnique);
     console.log(group_ids);
@@ -593,6 +594,8 @@ const Add_product = () => {
   const [Authors, setAuthors] = useState([]);
   // const [selectedCategory, setSelectedCategory] = React.useState([])
   // const [selectedSubCategory, setSelectedSubCategory] = React.useState([])
+  const [is_Selected1, setIs_Selected1] = React.useState(false);
+  const [is_Selected2, setIs_Selected2] = React.useState(false);
   const nav = useNavigate();
 
   useEffect(() => {
@@ -740,6 +743,8 @@ const Add_product = () => {
     description: "",
     is_recommended: 0,
     is_special: 0,
+
+    // checked_product_types: [],
   });
 
   const selectDropDownVal = (id, name) => {
@@ -786,7 +791,7 @@ const Add_product = () => {
   const setInputChange = (data, param) => {
     console.log(input, data, param);
     // input[param] = data;
-    console.log(input, data, param);
+    console.log("pre change input state", input, data, param);
     setInput({ ...input, [param]: data });
     console.log(input);
   };
@@ -921,11 +926,13 @@ const Add_product = () => {
     payload_data.append("is_variant", "yes");
     payload_data.append("description", value);
     payload_data.append("sub_category_id", input.sub_category_id);
-    payload_data.append("photos", "1");
+    // payload_data.append("photos", "1");
     payload_data.append("product_code", input.product_code);
     payload_data.append("availability", "1");
     payload_data.append("is_special", input.is_special);
     payload_data.append("is_recommended", input.is_recommended);
+    payload_data.append("NewRelease", input.NewRelease);
+    payload_data.append("DealOfTheWeek", input.DealOfTheWeek);
     console.log("that");
     console.log(variation);
     payload_data.append(
@@ -972,11 +979,27 @@ const Add_product = () => {
       '; width:30px; height:30px; border-radius:100% ; margin-right:2px"></li>';
   });
 
+  // const setProductTypesfn = () => {
+  //   const all_elements = document.querySelectorAll(".check-product-type");
+  //   console.log(all_elements, "All Elements from setroductTypefn");
+  //   let newProductTypes = [];
+  //   for (let i = 0; i < all_elements.length; i++) {
+  //     console.log("each check box", all_elements[i], all_elements[i].checked);
+  //     if (all_elements[i].checked) {
+  //       newProductTypes.push([i]);
+  //     }
+  //   }
+  //   // console.log("Checked Product Types", newProductTypes);
+  //   // setInputChange(newProductTypes, "checked_product_types");
+  // };
+
   return (
     <Fragment>
       <Breadcrumb title="Add Product" parent="Products" />
       <ToastContainer></ToastContainer>
-      {/* The Master Category Modal for  */}
+
+      {/**********************************The Master Category Modal(Banner) Removed here **************************/}
+
       {/* <Modal isOpen={open} toggle={handleCloseModal}>
         <ModalHeader>
           <h5 className="modal-title f-w-600" id="exampleModalLabel2">
@@ -1027,6 +1050,8 @@ const Add_product = () => {
         </ModalFooter>
       </Modal> */}
 
+      {/**********************************The Master Category Modal(Banner) Removed here **************************/}
+
       <Container fluid={true}>
         <Row>
           <Col sm="12">
@@ -1062,11 +1087,13 @@ const Add_product = () => {
                         <Col xl="9 xl-50" sm="6 col-9">
                           <img
                             src={
-                              "https://yrpitsolutions.com/Bookstore_API/" +
+                              // "https://yrpitsolutions.com/Bookstore_API/" +
+                              // cover
                               cover
                             }
                             alt=""
                             className="img-fluid image_zoom_1 blur-up lazyloaded"
+                            style={{ maxWidth: 400, minWidth: 350 }}
                           />
                         </Col>
                         <Col xl="3 xl-50" sm="6 col-3">
@@ -1074,12 +1101,29 @@ const Add_product = () => {
                             {dummyimgs.map((res, i) => {
                               return (
                                 <li key="{i}">
-                                  <div className="box-input-file">
+                                  <div
+                                    className="box-input-file"
+                                    id={`${i}`}
+                                    onMouseEnter={() =>
+                                      setCover((prev) =>
+                                        dummyimgs[i].img
+                                          ? dummyimgs[i].img
+                                          : prev
+                                      )
+                                    }
+                                  >
                                     {
                                       <Input
                                         className="upload"
                                         type="file"
-                                        onChange={(e) => _handleImgChange(e, i)}
+                                        onChange={(e) => {
+                                          _handleImgChange(e, i);
+                                          setCover((prev) =>
+                                            dummyimgs[i].img
+                                              ? dummyimgs[i].img
+                                              : prev
+                                          );
+                                        }}
                                       />
                                     }
 
@@ -1126,7 +1170,7 @@ const Add_product = () => {
                                     onClick={() => {
                                       selectDropDownVal(item.id, item.name);
                                       console.log("icon", item);
-                                      setCover(item.icon);
+                                      // setCover(item.icon);
                                     }}
                                   >
                                     {item.name}
@@ -1246,7 +1290,10 @@ const Add_product = () => {
                             </Label>
                             <div className="col-xl-8 col-sm-7">
                               <input
-                                onChange={(e) => _handleImgChange(e, 0)}
+                                onChange={(e) => {
+                                  _handleImgChange(e, 0);
+                                  setCover(dummyimgs[0]?.img);
+                                }}
                                 type="file"
                                 accept="image/png, image/jpeg"
                                 className="border form-group mb-3 mr-3 p-1 rounded-2 "
@@ -1319,15 +1366,13 @@ const Add_product = () => {
                             <div className="row flex">
                               <Label>
                                 <Input
-                                  className="radio_animated"
+                                  className="radio_animated check-product-type"
                                   id="r"
                                   type="checkbox"
                                   name="rdo-ani"
-                                  onChange={(e) => {
-                                    setInputChange(
-                                      "New Release",
-                                      "product_ype"
-                                    );
+                                  onChange={() => {
+                                    setIs_Selected1(!is_Selected1);
+                                    setInputChange(is_Selected1, "NewRelease");
                                   }}
                                 />
                                 {"New Release"} {"  "}
@@ -1349,14 +1394,15 @@ const Add_product = () => {
                               </Label> */}
                               <Label>
                                 <Input
-                                  className="radio_animated"
+                                  className="radio_animated check-product-type"
                                   id="r"
                                   type="checkbox"
                                   name="rdo-ani"
-                                  onChange={(e) => {
+                                  onChange={() => {
+                                    setIs_Selected2(!is_Selected2);
                                     setInputChange(
-                                      "Deal Of The Week",
-                                      "product_ype"
+                                      is_Selected2,
+                                      "DealOfTheWeek"
                                     );
                                   }}
                                 />

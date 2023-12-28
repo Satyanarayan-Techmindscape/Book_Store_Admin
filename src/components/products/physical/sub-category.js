@@ -79,6 +79,18 @@ const Sub_category = () => {
           let cat_data = res.data?.categories.categories.data;
           let new_sub_cat = cat_data.map((category, index) => {
             return {
+              image: (
+                <img
+                  alt=""
+                  src={
+                    category.icon == null
+                      ? "https://fastly.picsum.photos/id/925/200/300.jpg?hmac=1mxh8L9qVukkpb-iUojF9keY4Eq6gL0Ip0-kRYFE4gg"
+                      : "https://yrpitsolutions.com/Bookstore_API/" +
+                        category.icon
+                  }
+                  style={{ width: 50, height: 50 }}
+                />
+              ),
               status: (
                 <Button
                   key={index}
@@ -119,6 +131,7 @@ const Sub_category = () => {
     if (
       input.category_name === "" ||
       input.parent_id === "" ||
+      input.file == null ||
       input.is_instock === ""
     ) {
       toast.warning("Please Fill All Mandatary Field");
@@ -129,6 +142,7 @@ const Sub_category = () => {
     payload_data.append("parent_id", input.parent_id);
     payload_data.append("order_level", "1");
     payload_data.append("is_instock", input.is_instock);
+    payload_data.append("icon", input.file);
     if (input.category_name == null || input.parent_id == null) {
       toast.warning("Please Fill All the fileds");
       return;
@@ -159,6 +173,7 @@ const Sub_category = () => {
     payload_data.append("parent_id", data.pid);
     payload_data.append("lang", "en");
     payload_data.append("is_instock", data.stock);
+    payload_data.append("icon", data.file)
 
     await post("admin/category/update/" + data.id, payload_data).then((res) => {
       if (res.data.success) {
@@ -274,6 +289,25 @@ const Sub_category = () => {
                             id="validationCustom02"
                             type="file"
                           /> */}
+                        <FormGroup>
+                          <Label
+                            htmlFor="message-text"
+                            className="col-form-label"
+                          >
+                            Sub Category Image : (260 x 350px)
+                            <span className="text-danger">*</span>:
+                          </Label>
+                          <Input
+                            onChange={(e) =>
+                              setInputChange(e.target.files[0], "file")
+                            }
+                            className="form-control"
+                            id="validationCustom02"
+                            type="file"
+                            name="category_img"
+                          />
+                        </FormGroup>
+
                         <FormGroup className="m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
                           <Label className="d-block">
                             <Input
